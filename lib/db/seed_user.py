@@ -2,7 +2,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from faker import Faker
 from datetime import date
-from models import User, Income, Transactions, Base
+from models import User, Income, Transactions, TransactionCategory, Base
 
 engine = create_engine('sqlite:///finance.db')
 Session = sessionmaker(bind=engine)
@@ -32,7 +32,7 @@ for i in range (30):
     transaction = Transactions(
         amount=round(fake.random_number(digits=4) / 100, 2), 
         date= fake.date_between(start_date='-1y', end_date='today'),
-        category=fake.word(),
+        category=fake.random.choice(list(TransactionCategory)).value,
         description=fake.sentence(),
         user=user 
     )

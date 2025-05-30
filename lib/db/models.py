@@ -1,8 +1,16 @@
 from sqlalchemy import Column, Integer, String, Float, Date, ForeignKey, create_engine
 from sqlalchemy.orm import relationship, declarative_base
 from datetime import date
+from enum import Enum
 
 Base = declarative_base()
+
+class TransactionCategory(Enum):
+    FOOD = "Food"
+    RENT = "Rent"
+    FEES = "Fees"
+    OTHER = "Other"
+
 
 class User(Base):
     __tablename__ = 'users'
@@ -12,8 +20,8 @@ class User(Base):
     age = Column(Integer)
     profession = Column(String)
 
-    incomes = relationship('Income', backref='user')
-    transactions = relationship('Transactions', backref='user')
+    incomes = relationship('Income', backref='user',  cascade='all, delete-orphan')
+    transactions = relationship('Transactions', backref='user',  cascade='all, delete-orphan')
 
 class Income(Base):
     __tablename__ = 'income'
