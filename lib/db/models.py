@@ -1,5 +1,7 @@
-from sqlalchemy import Column, Integer, String, create_engine
+from sqlalchemy import Column, Integer, String, Float, Date, ForeignKey, create_engine
+from sqlalchemy.orm import relationship,backref
 from sqlalchemy.orm import declarative_base
+from datetime import date
 
 Base = declarative_base()
 
@@ -11,25 +13,32 @@ class User(Base):
     age = Column(Integer)
     profession = Column(String)
 
+    income = relationship('income',backref('user') )
+    transactions = relationship('Transitions',backref('user') )
+
+
+
 
 class Income(Base):
     __tablename__ = 'income'
 
     id = Column(Integer, primary_key=True)
-    amount = Column (float , nullable=False)
-    source = =Column (String)
+    amount = Column(Float, nullable=False)
+    source = Column(String)
 
+    user_id = Column(Integer(),ForeignKey(User.id))
 
 
 class Transactions(Base):
-     __tablename__ = 'transactions'
+    __tablename__ = 'transactions'
 
     id = Column(Integer, primary_key=True)
-    amount = Column (float , nullable=False)
-    date = Column(date)
-    category = Column(String nullable=False)
-    description = Column (String())
+    amount = Column(Float, nullable=False)
+    date = Column(Date)
+    category = Column(String, nullable=False)
+    description = Column(String)
 
+    user_id = Column(Integer(),ForeignKey(User.id))
 
 
 
