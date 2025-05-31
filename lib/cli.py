@@ -40,7 +40,7 @@ def main_menu():
         if choice == "1":
             create_user_flow(session)
         elif choice == "2":
-            view_users()
+            view_users(session)
         elif choice == "3":
             find_user()
         elif choice == "4":
@@ -56,7 +56,7 @@ def main_menu():
             print("Choice invalid!")
             
             
-def view_users():
+def view_users(session):
     with Session() as session:
         users = list_all_users(session)
         if users:

@@ -73,7 +73,6 @@ def create_user_flow(session):
         
         
 def list_all_users(session):
-    with Session()as session:
         users = session.query(User).all()
         return users
     
