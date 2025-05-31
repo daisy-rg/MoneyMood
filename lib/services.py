@@ -76,4 +76,66 @@ def list_all_users(session):
         users = session.query(User).all()
         return users
     
-    
+ 
+
+def find_user(session):
+    user_id = input("Enter user ID (or press Enter to search by name): ").strip()
+
+    if user_id:
+        user = session.query(User).filter_by(id=user_id).first()
+    else:
+        name = input("Enter user name: ").strip()
+        user = session.query(User).filter_by(name=name).first()
+
+    if user:
+        print(f"\nFound user: {user.name} (ID: {user.id}, Age: {user.age}, Profession: {user.profession})")
+    else:
+        print("User not found.")
+
+def user_income(session):
+    user_id = input("Enter user ID: ").strip()
+    user = session.query(User).filter_by(id=user_id).first()
+
+    if not user:
+        print("User not found.")
+        return
+
+    if user.income:
+        print(f"\nIncomes for {user.name}:")
+        for income in user.income:
+            print(f"- {income.source}: ${income.amount}")
+    else:
+        print(f"{user.name} has no income records.")
+
+def user_transactions(session):
+    user_id = input("Enter user ID: ").strip()
+    user = session.query(User).filter_by(id=user_id).first()
+
+    if not user:
+        print("User not found.")
+        return
+
+    if user.transactions:
+        print(f"\nTransactions for {user.name}:")
+        for txn in user.transactions:
+            print(f"- ${txn.amount} on {txn.date} [{txn.category}]: {txn.description}")
+    else:
+        print(f"{user.name} has no transactions.")
+        
+def delete_user(session):
+    user_id = input("Enter the ID of the user to delete: ").strip()
+
+    user = session.query(User).filter_by(id=user_id).first()
+
+    if not user:
+        print("User not found.")
+        return
+
+    confirm = input(f"Are you sure you want to delete user '{user.name}' and all their records? (y/n): ").lower()
+    if confirm == 'y':
+        session.delete(user)
+        session.commit()
+        print(f"User '{user.name}' and all their records have been deleted.")
+    else:
+        print("Deletion canceled.")
+           

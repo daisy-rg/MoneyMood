@@ -19,9 +19,12 @@ class User(Base):
     name = Column(String, nullable=False)
     age = Column(Integer)
     profession = Column(String)
+    
+    income = relationship("Income", back_populates="user", cascade="all, delete-orphan")
+    transactions = relationship("Transactions", back_populates="user", cascade="all, delete-orphan")
 
-    incomes = relationship('Income', backref='user',  cascade='all, delete-orphan')
-    transactions = relationship('Transactions', backref='user',  cascade='all, delete-orphan')
+   
+   
 
 class Income(Base):
     __tablename__ = 'income'
@@ -30,6 +33,8 @@ class Income(Base):
     amount = Column(Float, nullable=False)
     source = Column(String)
     user_id = Column(Integer, ForeignKey('users.id'))
+    
+    user = relationship("User", back_populates="income")
 
 class Transactions(Base):
     __tablename__ = 'transactions'
@@ -40,7 +45,8 @@ class Transactions(Base):
     category = Column(String, nullable=False)
     description = Column(String)
     user_id = Column(Integer, ForeignKey('users.id'))
-
+    
+    user = relationship("User", back_populates="transactions") 
 
 engine = create_engine('sqlite:///finance.db')
 Base.metadata.create_all(engine)

@@ -3,7 +3,15 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm import declarative_base
 from tqdm import tqdm
 import time
-from services import create_user_flow, list_all_users
+from services import (
+    create_user_flow,
+    list_all_users,
+    find_user,
+    user_income,
+    user_transactions,
+    delete_user
+)
+
 
 Base = declarative_base()
 
@@ -42,13 +50,13 @@ def main_menu():
         elif choice == "2":
             view_users(session)
         elif choice == "3":
-            find_user()
+            find_user(session)
         elif choice == "4":
-            user_income()
+            user_income(session)
         elif choice == "5":
-            user_transactions()
+            user_transactions(session)
         elif choice == "6":
-            delete_user()
+            delete_user(session)
         elif choice == "7":
             print("Goodbye!")
             break
