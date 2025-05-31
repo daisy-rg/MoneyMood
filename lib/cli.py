@@ -1,17 +1,15 @@
 from sqlalchemy import create_engine, MetaData
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import declarative_base
 from tqdm import tqdm
 import time
-from models import User, Income, Transactions
-
+from services import create_user_flow
 
 Base = declarative_base()
 
 engine = create_engine('sqlite:///finance.db')
 Session = sessionmaker(bind=engine)
 session = Session()
-
 
 def main_menu():
 
@@ -23,11 +21,11 @@ def main_menu():
     print(" \\_______________________________________________________/")
     print("           [•] 2023 | v1.2.0 | by DevTeam [•]            ")
 
-    for _ in tqdm(range(10), desc="Program Loading...", unit="s"):
+    for i in tqdm(range(10), desc="Program Loading...", unit="s"):
         time.sleep(1)
 
-
     while True:
+        
         print("\n Main Menu:")
         print("1. Create User")
         print("2. List all users")
@@ -57,6 +55,5 @@ def main_menu():
         else:
             print("Choice invalid!")
 
-
-        
-
+if __name__ == '__main__':
+    main_menu()

@@ -1,4 +1,4 @@
-from db.models import User, Income, Transaction, TransactionCategory
+from db.models import User, Income, Transactions, TransactionCategory
 from sqlalchemy.orm import sessionmaker, joinedload
 from sqlalchemy import create_engine
 from datetime import datetime
@@ -34,7 +34,7 @@ def create_user_flow(session):
     while True:
         print("\n--- Add Transaction ---")
         amount = float(input("Enter transaction amount: "))
-        date = input("Enter date (YYYY-MM-DD): ")
+        date_string = input("Enter date (YYYY-MM-DD): ")
         
         
         print("Choose a category:")
@@ -54,15 +54,16 @@ def create_user_flow(session):
                 print("Please enter a valid number.")
 
         description = input("Enter transaction description: ")
-
-        transaction = Transaction(
+        
+        date_obj = datetime.strptime(date_string, "%Y-%m-%d").date()
+        transactions = Transactions(
             amount=amount,
-            date=date,
+            date=date_obj,
             category=category,
             description=description,
             user_id=user.id
         )
-        session.add(transaction)
+        session.add(transactions)
         session.commit()
         print(f" Transaction '{amount}' added.")
 
