@@ -70,3 +70,11 @@ def create_user_flow(session):
         add_another = input("Add another transaction? (y/n): ").lower()
         if add_another != 'y':
             break
+        
+        
+def list_all_users(session):
+    with Session()as session:
+        users = session.query(User).all()
+        return users
+    
+    

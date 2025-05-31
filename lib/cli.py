@@ -3,11 +3,11 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm import declarative_base
 from tqdm import tqdm
 import time
-from services import create_user_flow
+from services import create_user_flow, list_all_users
 
 Base = declarative_base()
 
-engine = create_engine('sqlite:///finance.db')
+engine = create_engine('sqlite:///finance.db',echo=True)
 Session = sessionmaker(bind=engine)
 session = Session()
 
@@ -40,7 +40,7 @@ def main_menu():
         if choice == "1":
             create_user_flow(session)
         elif choice == "2":
-            list_all_users()
+            view_users()
         elif choice == "3":
             find_user()
         elif choice == "4":
@@ -54,6 +54,17 @@ def main_menu():
             break
         else:
             print("Choice invalid!")
+            
+            
+def view_users():
+    with Session() as session:
+        users = list_all_users(session)
+        if users:
+            print("\nRegistered Users:")
+            for user in users:
+                print(f"- {user.name} (ID: {user.id})")
+        else:
+            print("No users found.")
 
 if __name__ == '__main__':
     main_menu()
